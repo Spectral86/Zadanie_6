@@ -98,25 +98,27 @@ namespace Zadanie_6.Services
             con.Close();
         }
 
-        public void UpdateAnimal(Animal animal)
-        {
-            using var con = new SqlConnection("Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=pd3415;Integrated Security=True;TrustServerCertificate=True");
-            using var com = new SqlCommand(
-                "UPDATE animal SET " +
-                "(" +
-               "[Name]" +
-               ",[Description]" +
-               ",[Category]" +
-               ",[Area]" +
-               ") VALUES (" +
-                "'" + animal.Name + "'," +
-                "'" + animal.Description + "'," +
-                "'" + animal.Category + "'," +
-                "'" + animal.Area + "'" +
-                ")", con);
-            con.Open();
-            var dr = com.ExecuteNonQuery();
-            con.Close();
+     
+public void UpdateAnimals(Animals animal)
+{
+    using var con = new SqlConnection("Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=pd3415;Integrated Security=True;TrustServerCertificate=True");
+    using var com = new SqlCommand(
+        "UPDATE animal SET " +
+        "Name = @Name," +
+        "Description = @Description," +
+        "Category = @Category," +
+        "Area = @Area " +
+        "WHERE Id = @Id", con);
+    com.Parameters.Add("@Name", SqlDbType.VarChar).Value = animal.Name;
+    com.Parameters.Add("@Description", SqlDbType.VarChar).Value = animal.Description;
+    com.Parameters.Add("@Category", SqlDbType.VarChar).Value = animal.Category;
+    com.Parameters.Add("@Area", SqlDbType.VarChar).Value = animal.Area;
+    com.Parameters.Add("@Id", SqlDbType.Int).Value = animal.Id;
+
+    con.Open();
+    var dr = com.ExecuteNonQuery();
+    con.Close();
+
         }
 
 
